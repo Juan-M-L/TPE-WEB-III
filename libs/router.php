@@ -75,7 +75,6 @@ class Router {
                 $route->run($this->request, $this->response);
                 return;
             }
-            print_r($url);
         }
         //Si ninguna ruta coincide con el pedido y se configuró ruta por defecto.
         if ($this->defaultRoute != null) {

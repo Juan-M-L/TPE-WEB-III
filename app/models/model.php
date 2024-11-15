@@ -73,6 +73,14 @@ class MainModel {
         $data->execute(array($id));
     }
 
+    // Obtiene todas las categorías (modelos)
+    public function getAllCategories() {
+        if ($this->dbError) return [];
+        $data = $this->db->prepare("SELECT * FROM modelo;");
+        $data->execute();
+        return $data->fetchAll();
+    }
+
     public function addCategory($nombre, $anio, $capacidad, $combustible) {
         $data = $this->db->prepare("INSERT INTO modelo (nombre, anio, capacidad, combustible) VALUES (?,?,?,?);");
         $data->execute(array($nombre, $anio, $capacidad, $combustible));
