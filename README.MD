@@ -25,7 +25,7 @@ http://localhost/TPE-WEB-III-main/api
 
 **Ejemplo de uso**:
 
-`http://localhost/TPE-Web-Parte-III-main/api/vehicle`
+`http://localhost/TPE-WEB-III-main/api/vehicle`
 
 **Respuesta**:
 ```json
@@ -69,7 +69,7 @@ http://localhost/TPE-WEB-III-main/api
 
 **Ejemplo de uso**:
 
-`http://localhost/TPE-Web-Parte-III-main/api/vehicle/2`
+`http://localhost/TPE-WEB-III-main/api/vehicle/2`
 
 **Respuesta**:
 ```json
@@ -103,7 +103,7 @@ Si no se especifica un valor entero en el campo ID, la API retornará este mensa
 
 **Endpoint**: `/vehicle`
 
-**Ejemplo de uso**: `http://localhost/TPE-Web-Parte-III-main/api/vehicle`
+**Ejemplo de uso**: `http://localhost/TPE-WEB-III-main/api/vehicle`
 
 **Body**:
 ```json
@@ -177,7 +177,7 @@ Si se desea agregar un nuevo vehículo con un nuevo modelo, se debe primero agre
 
 **Endpoint**: `/model`
 
-**Ejemplo de uso**: `http://localhost/TPE-Web-Parte-III-main/api/model`
+**Ejemplo de uso**: `http://localhost/TPE-WEB-III-main/api/model`
 
 **Body**:
 ```json
