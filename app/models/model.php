@@ -5,15 +5,34 @@ class MainModel {
     protected $db;
     private $dbError;
 
-    //Inicia conexión con la base de datos. 
     public function __construct() {
         try {
-            //Intenta realizar una nueva conexión.
+            //Realiza una nueva conexión, sin definir aún la base de datos.
             $this->db = new PDO(
-                "mysql:host=".MYSQL_HOST.";dbname=".MYSQL_DB.";charset=utf8", MYSQL_USER, MYSQL_PASS
+                "mysql:host=".MYSQL_HOST,
+                MYSQL_USER,
+                MYSQL_PASS
             );
+
+            //Verifica que la base de datos exista. Si no existe, la crea.
+            $this->db->query("CREATE DATABASE IF NOT EXISTS ".MYSQL_DB.";");
+
+            //Se conecta a la base de datos.
+            $this->db->query("USE ".MYSQL_DB);
+
+            $this->__deploy();
         } catch (PDOException $e) {
             $this->dbError = "Error de conexión con la base de datos: " . $e->getMessage();
+        }
+    }
+
+    //Crea las tablas de la base de datos, si no hay tablas presentes.
+    private function __deploy() {
+        $query = $this->db->query('SHOW TABLES');
+        $tables = $query->fetchAll();
+        if(count($tables) == 0) {
+            $sql = file_get_contents("autos.sql");
+            $this->db->query($sql);
         }
     }
 
@@ -22,23 +41,24 @@ class MainModel {
         return $this->dbError;
     }
 
-    //VEHÍCULOS.
-
     //Consigue todos los datos uniendo los contenidos de ambas tablas.
     public function getVehicleData() {
         if ($this->dbError) return [];
         $data = $this->db->prepare("SELECT 
         Auto.Id as AutoId, 
-        Auto.Marca, 
+        Auto.Marca,
         Auto.ModeloId, 
         Auto.Precio, 
-        Modelo.Nombre
+        Modelo.Nombre, 
+        Modelo.Anio, 
+        Modelo.Capacidad, 
+        Modelo.Combustible
         FROM Auto JOIN Modelo ON Auto.ModeloId = Modelo.Id;");
         $data->execute();
-        return $data->fetchAll();
+        return $data->fetchAll(PDO::FETCH_OBJ);
     }
 
-    //Consigue un array con un vehículo que tiene el id solicitado.
+    //Consigue el vehículo que tiene el id solicitado.
     public function getVehicleById($id) {
         if ($this->dbError | $id == false) return [];
         $data = $this->db->prepare("SELECT 
@@ -78,7 +98,7 @@ class MainModel {
         if ($this->dbError) return [];
         $data = $this->db->prepare("SELECT * FROM modelo;");
         $data->execute();
-        return $data->fetchAll();
+        return $data->fetchAll(PDO::FETCH_OBJ);
     }
 
     public function addCategory($nombre, $anio, $capacidad, $combustible) {

@@ -10,7 +10,7 @@ class Route {
     private $method;
     private $params;
 
-    public function __construct($url, $verb, $controller, $method){
+    public function __construct($url, $verb, $controller, $method) {
         $this->url = $url;
         $this->verb = $verb;
         $this->controller = $controller;
@@ -40,7 +40,7 @@ class Route {
     }
 
     // Ejecuta la ruta creando una instancia de un controlador y usándola para ejecutar el método que dicho controlador posee.
-    public function run($request, $response){
+    public function run($request, $response) {
         $controller = $this->controller;  
         $method = $this->method;
         $request->params = (object) $this->params;
@@ -51,7 +51,6 @@ class Route {
 
 class Router {
     private $routeTable = [];
-    private $middlewares = [];
     private $defaultRoute;
     private $request;
     private $response;
@@ -63,11 +62,6 @@ class Router {
     }
 
     public function route($url, $verb) {
-        /*
-        foreach ($this->middlewares as $middleware) {
-            $middleware->run($this->request, $this->response);
-        }
-        */
         //Busca en la tabla de ruteo una url y verbo que coincidan con la ruta especificada.
         foreach ($this->routeTable as $route) {
             //Si la url y el verbo coinciden con una ruta, ejecuta el controlador que corresponde.
@@ -76,14 +70,10 @@ class Router {
                 return;
             }
         }
-        //Si ninguna ruta coincide con el pedido y se configuró ruta por defecto.
+        //Si ninguna ruta coincide con el pedido y se configuró ruta por defecto, se ejecuta esa ruta.
         if ($this->defaultRoute != null) {
             $this->defaultRoute->run($this->request, $this->response);
         }
-    }
-
-    public function addMiddleware($middleware) {
-        $this->middlewares[] = $middleware;
     }
     
     public function addRoute ($url, $verb, $controller, $method) {
