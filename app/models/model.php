@@ -48,6 +48,7 @@ class MainModel {
         Auto.Id as AutoId, 
         Auto.Marca,
         Auto.ModeloId, 
+        Auto.Kilometraje,
         Auto.Precio, 
         Modelo.Nombre, 
         Modelo.Anio, 

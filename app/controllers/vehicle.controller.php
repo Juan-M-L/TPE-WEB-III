@@ -23,6 +23,16 @@ class VehicleController {
     public function vehicleById($request) {
         $id = $request->params->id;
         $message = new stdClass();
+        
+        //Verifica que no haya caracteres que no son dígitos.
+        foreach (str_split($id) as $char) {
+            //Si encuentra un caracter que no es dígito, retorna error 400.
+            if (!ctype_digit($char)) {
+                $message->message = 'El parámetro id sólo acepta números enteros.';
+                return $this->view->response($message, 400);    
+            }
+        }
+
         $data = $this->model->getVehicleById($id);
         if (empty($data)) {
             return $this->view->response($data, 204);
@@ -54,11 +64,11 @@ class VehicleController {
 
         //Verifica que no se haya ingresado un string en kilometraje y/o precio.
         if (!is_int($request->body->kilometraje)) {
-            $message->message = 'El campo kilometraje sólo acepta números enteros';
+            $message->message = 'El campo kilometraje sólo acepta el 0 (cero) y números enteros positivos';
             return $this->view->response($message, 400);
         }
         if (!is_numeric($request->body->precio)) {
-            $message->message = 'El campo precio sólo acepta números enteros o de coma flotante';
+            $message->message = 'El campo precio sólo acepta números enteros o de coma flotante positivos';
             return $this->view->response($message, 400);
         }
 

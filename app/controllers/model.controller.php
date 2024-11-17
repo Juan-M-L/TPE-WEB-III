@@ -34,17 +34,17 @@ class ModelController {
         
         //Verifica que no se haya ingresado un string o float en anio y capacidad.
         if (!is_int($request->body->anio)) {
-            $message->message = 'El campo anio sólo acepta números enteros';
+            $message->message = 'El campo anio sólo acepta el 0 (cero) y números enteros positivos';
             return $this->view->response($message, 400);
         }
         if (!is_int($request->body->capacidad)) {
-            $message->message = 'El campo capacidad sólo acepta números enteros';
+            $message->message = 'El campo capacidad sólo acepta el 0 (cero) y números enteros positivos';
             return $this->view->response($message, 400);
         }
 
         //Verifica que no haya números extraños en anio, y que no haya números inferiores a 1 en capacidad.
-        if ($request->body->anio > getdate()["year"] || $request->body->anio < 1900) {
-            $message->message = 'El campo anio no acepta valores superiores a '.getdate()["year"].' o inferiores a 1900.';
+        if ($request->body->anio > getdate()["year"] || $request->body->anio < 1880) {
+            $message->message = 'El campo anio no acepta valores superiores a '.getdate()["year"].' o inferiores a 1880.';
             return $this->view->response($message, 400);
         }
         if ($request->body->capacidad < 1) {
